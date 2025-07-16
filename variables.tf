@@ -1,7 +1,7 @@
 //Resource Group
 variable "resource_group_name" {
     type = string
-    default = "test-conor-rg"
+    default = "test-0717-rg"
 }
 variable "location" {
     type = string
@@ -25,11 +25,16 @@ variable "subnets" {
       "test-snet-1" = {
         address_prefixes = ["10.0.1.0/24"]
       }
-      "test-snet-2" = {
-        address_prefixes = ["10.0.2.0/24"]
-      }
-      "test-snet-3" = {
-        address_prefixes = ["10.0.3.0/24"]
-      }
     }
+}
+
+//SA
+//Storage Account
+variable "stoage_account_name" {
+  type    = string
+  default = "test0conor0st00717"  
+}
+variable "container_name" {
+  type    = string
+  default = "tfstate"
 }
