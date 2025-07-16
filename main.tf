@@ -6,14 +6,14 @@ resource "azurerm_resource_group" "rg" {
 }
 //VNET
 module "vnet0717" {
-  source = "./modules/network/vnet"
+  source = ".modules/network/vnet"
   vnet_name = var.vnet1
   address_space = var.vnet1_address_space
   resource_group_name = azurerm_resource_group.rg.name
   location = azurerm_resource_group.rg.location
 }
 module "snet0717" {
-  source = "./modules/network/snet"
+  source = ".modules/network/snet"
   subnets = var.subnets
   resource_group_name = azurerm_resource_group.rg.name
   vnet_name = module.vnet0717.vnet_name
@@ -22,14 +22,14 @@ module "snet0717" {
 
 //NSG
 module "nsg0717" {
-  source = "./modules/network/nsg"
+  source = ".modules/network/nsg"
   nsg_name = var.linux_nsg_name
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 }
 //NSG-Rule
 module "nsg_rule0717" {
-source              = "./modules/network/nsg-rule"
+source              = ".modules/network/nsg-rule"
   resource_group_name = var.resource_group_name
   nsg_name            = module.nsg_app.nsg_name
 
@@ -70,7 +70,7 @@ module "nic0717" {
 }
 //VM-Linux
 module "vm_linux0717" {
-  source              = "./modules/compute/vm-linux"
+  source              = ".modules/compute/vm-linux"
   name                = "vm-linux-web01"
   location            = var.location
   resource_group_name = var.resource_group_name
