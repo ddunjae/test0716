@@ -1,39 +1,50 @@
 variable "name" {
-  description = "NIC 이름"
-  type        = string
+  type = string
 }
 
 variable "location" {
-  description = "리전"
-  type        = string
+  type = string
 }
 
 variable "resource_group_name" {
-  description = "리소스 그룹"
-  type        = string
+  type = string
 }
 
-variable "subnet_id" {
-  description = "NIC이 연결될 서브넷 ID"
-  type        = string
+variable "vm_size" {
+  type = string
 }
 
-variable "private_ip_allocation" {
-  description = "Private IP 할당 방식 (Dynamic | Static)"
-  type        = string
-  default     = "Dynamic"
+variable "network_interface_ids" {
+  type = list(string)
 }
 
-variable "private_ip_address" {
-  description = "Static IP 사용 시 설정할 주소"
-  type        = string
-  default     = null
+variable "admin_username" {
+  type = string
 }
 
-variable "public_ip_id" {
-  description = "Public IP 리소스 ID (옵션)"
-  type        = string
-  default     = null
+variable "admin_password" {
+  type      = string
+  sensitive = true
+}
+
+variable "os_disk_type" {
+  type    = string
+  default = "Standard_LRS"
+}
+
+variable "image" {
+  type = object({
+    publisher = string
+    offer     = string
+    sku       = string
+    version   = string
+  })
+  default = {
+    publisher = "Canonical"
+    offer     = "0001-com-ubuntu-server-focal"
+    sku       = "20_04-lts"
+    version   = "latest"
+  }
 }
 
 variable "tags" {

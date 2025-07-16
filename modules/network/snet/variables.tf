@@ -3,7 +3,6 @@ variable "subnets" {
     address_prefixes = list(string)
   }))
 }
-
 variable "resource_group_name" {
   type = string
 }

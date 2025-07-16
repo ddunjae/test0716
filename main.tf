@@ -71,15 +71,13 @@ module "nic0717" {
 module "vm_linux0717" {
   source              = "./modules/compute/linux-vm"
   name                = var.linux_vm_name
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = var.location
+  resource_group_name = var.resource_group_name
   vm_size             = var.linux_vm_size
+  network_interface_ids = [module.nic0717.nic_id]
   admin_username      = var.linux_vm_username
   admin_password      = var.linux_vm_password
-  network_interface_ids = [module.nic.nic_id]
 }
-
-
 
 #Storage Account
 module "sa0717" {
