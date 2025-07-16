@@ -67,7 +67,7 @@ module "nic0717" {
 }
 //VM-Linux
 module "vm_linux0717" {
-  source              = "./modules/compute/vm-linux"
+  source              = "./modules/compute/linux-vm"
   name                = var.linux_vm_name
   location            = var.location
   resource_group_name = var.resource_group_name
