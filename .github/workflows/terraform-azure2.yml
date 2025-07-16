@@ -7,6 +7,9 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
 
+    environment:
+      name: terraform-approval  # 환경 이름 (수동 승인 대상)
+
     env:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
@@ -27,6 +30,9 @@ jobs:
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan
+
+      - name: Wait for Approval Before Apply
+        run: echo "Waiting for approval to apply infrastructure changes"
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
