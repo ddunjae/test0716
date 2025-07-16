@@ -14,3 +14,12 @@ module "sa0717" {
   account_tier             = var.stoage_account_tier
   replication_type         = var.stoage_account_replication_type
 }
+module "sablob" {
+  source = "./modules/storage/blob-container"
+  name                     = var.container_name
+  storage_account_name    = var.stoage_account_name
+  access_type             = "private"
+  metadata                = {}
+
+  
+}
