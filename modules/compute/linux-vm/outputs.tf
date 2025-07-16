@@ -1,11 +1,11 @@
 output "vm_id" {
-  value = azurerm_linux_virtual_machine.linux_vm.id
+  value = azurerm_linux_virtual_machine.linux.id
 }
 
 output "vm_name" {
-  value = azurerm_linux_virtual_machine.linux_vm.name
+  value = azurerm_linux_virtual_machine.linux.name
 }
 
 output "vm_private_ip" {
-  value = azurerm_linux_virtual_machine.linux_vm.private_ip_address
+  value = azurerm_linux_virtual_machine.linux.private_ip_address
 }
