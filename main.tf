@@ -13,11 +13,10 @@ module "vnet0717" {
   location = azurerm_resource_group.rg.location
 }
 module "snet0717" {
-  source = "./modules/network/snet"
-  subnets = var.subnets
+  source              = "./modules/network/snet"
+  subnets             = var.subnets
   resource_group_name = azurerm_resource_group.rg.name
-  vnet_name = var.vnet1
-  
+  vnet_name           = var.vnet1
 }
 
 //NSG
