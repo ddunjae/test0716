@@ -6,14 +6,14 @@ resource "azurerm_resource_group" "rg" {
 }
 //VNET
 module "vnet0717" {
-  source = ".modules/network/vnet"
+  source = "./modules/network/vnet"
   vnet_name = var.vnet1
   address_space = var.vnet1_address_space
   resource_group_name = azurerm_resource_group.rg.name
   location = azurerm_resource_group.rg.location
 }
 module "snet0717" {
-  source = ".modules/network/snet"
+  source = "./modules/network/snet"
   subnets = var.subnets
   resource_group_name = azurerm_resource_group.rg.name
   vnet_name = module.vnet0717.vnet_name
@@ -22,14 +22,14 @@ module "snet0717" {
 
 //NSG
 module "nsg0717" {
-  source = ".modules/network/nsg"
+  source = "./modules/network/nsg"
   nsg_name = var.linux_nsg_name
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 }
 //NSG-Rule
 module "nsg_rule0717" {
-source              = ".modules/network/nsg-rule"
+source              = "./modules/network/nsg-rule"
   resource_group_name = var.resource_group_name
   nsg_name            = module.nsg_app.nsg_name
 
@@ -58,20 +58,17 @@ source              = ".modules/network/nsg-rule"
 }
 //NIC
 module "nic0717" {
-  source = ".modules/compute/nic"
+  source = "./modules/compute/nic"
   name = var.linux_nic_name
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   subnet_id = module.snet0717.subnet_id
-  network_security_group_id = module.nsg0717.nsg_id
-  private_ip_address_allocation = "Dynamic"
-  private_ip_address_version = "IPv4"
 
 }
 //VM-Linux
 module "vm_linux0717" {
-  source              = ".modules/compute/vm-linux"
-  name                = "vm-linux-web01"
+  source              = "./modules/compute/vm-linux"
+  name                = var.linux_vm_name
   location            = var.location
   resource_group_name = var.resource_group_name
   vm_size             = var.linux_vm_size
