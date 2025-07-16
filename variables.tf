@@ -8,31 +8,18 @@ variable "location" {
     default = "koreacentral"
 }
 
-variable "vnet_address_space" {
-  type    = list(string)
-  default = ["10.0.0.0/16"]
-}
-variable "subnets" {
-  type = map(object({
-    address_prefixes = list(string)
-  }))
-  default = {
-    "test-snet-1" = { address_prefixes = ["10.0.1.0/24"] }
-    "test-snet-2" = { address_prefixes = ["10.0.2.0/24"] }
-    "test-snet-3" = { address_prefixes = ["10.0.3.0/24"] }
-  }
-}
-
-
-
-
-
-
-//SA
 //Storage Account
 variable "stoage_account_name" {
   type    = string
-  default = "test0conor0st00717"  
+  default = "testconorstorage0717"  
+}
+variable "stoage_account_tier" {
+  type = string
+  default = "Standard"
+}
+variable "stoage_account_replication_type" {
+  type = string
+  default = "LRS"
 }
 variable "container_name" {
   type    = string
