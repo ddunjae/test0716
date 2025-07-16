@@ -63,10 +63,9 @@ module "nic0717" {
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   subnet_id = module.snet0717.subnet_ids["test-subnet-1"]
-
-
-
 }
+
+
 //VM-Linux
 module "vm_linux0717" {
   source              = "./modules/compute/linux-vm"
