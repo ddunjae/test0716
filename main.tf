@@ -31,7 +31,7 @@ module "nsg0717" {
 module "nsg_rule0717" {
 source              = "./modules/network/nsg-rule"
   resource_group_name = var.resource_group_name
-  nsg_name            = module.nsg_app.nsg_name
+  nsg_name            = var.linux_nsg_name
 
   rules = {
     "allow-ssh" = {
