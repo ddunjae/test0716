@@ -58,14 +58,16 @@ source              = "./modules/network/nsg-rule"
 }
 //NIC
 module "nic0717" {
-  source = "./modules/network/nic"
-  nic_name = var.linux_nic_name
-  resource_group_name = azurerm_resource_group.rg.name
+  source = ".modules/compute/nic"
+  name = var.linux_nic_name
   location = azurerm_resource_group.rg.location
-  subnet_id = var.snet0717.subnet_ids["test-subnet-1"]
-  nsg_id = var.nsg0717.nsg_id
-}
+  resource_group_name = azurerm_resource_group.rg.name
+  subnet_id = module.snet0717.subnet_id
+  network_security_group_id = module.nsg0717.nsg_id
+  private_ip_address_allocation = "Dynamic"
+  private_ip_address_version = "IPv4"
 
+}
 //VM-Linux
 module "vm_linux0717" {
   source              = "./modules/compute/vm-linux"
