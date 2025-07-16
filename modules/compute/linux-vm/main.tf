@@ -1,6 +1,6 @@
 #Azure에서 기본적인 Linux 가상 머신을 생성하는 모듈
 
-resource "azurerm_linux_virtual_machine" "linux_vm" {
+resource "azurerm_linux_virtual_machine" "linux" {
   name                = var.name
   location            = var.location
   resource_group_name = var.resource_group_name

@@ -31,8 +31,5 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -out=tfplan
 
-      - name: Wait for Approval Before Apply
-        run: echo "Waiting for approval to apply infrastructure changes"
-
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
