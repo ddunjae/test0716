@@ -17,6 +17,7 @@ module "snet0717" {
   subnets             = var.subnets
   resource_group_name = azurerm_resource_group.rg.name
   vnet_name           = var.vnet1
+  depends_on = [ module.vnet0717 ]
 }
 
 //NSG
@@ -54,6 +55,9 @@ source              = "./modules/network/nsg-rule"
       destination_address_prefix = "*"
     }
   }
+  depends_on = [
+    module.nsg0717
+    ]
 }
 //NIC
 module "nic0717" {
@@ -62,6 +66,7 @@ module "nic0717" {
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   subnet_id = module.snet0717.subnet_ids["test-subnet-1"]
+  depends_on = [module.snet0717]
 }
 
 
