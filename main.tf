@@ -62,7 +62,8 @@ module "nic0717" {
   name = var.linux_nic_name
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  subnet_id = module.snet0717.subnet_id
+  subnet_id = module.snet0717.subnet_ids["test-subnet-1"]
+
 
 
 }
@@ -70,16 +71,13 @@ module "nic0717" {
 module "vm_linux0717" {
   source              = "./modules/compute/linux-vm"
   name                = var.linux_vm_name
-  location            = var.location
-  resource_group_name = var.resource_group_name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   vm_size             = var.linux_vm_size
-  network_interface_ids = [module.nic0717.nic_id]
   admin_username      = var.linux_vm_username
   admin_password      = var.linux_vm_password
+  network_interface_ids = [module.nic.nic_id]
 }
-
-
-
 
 
 
