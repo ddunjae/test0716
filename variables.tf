@@ -94,40 +94,32 @@ variable "windows_vm_password" {
 }
 
 //WEb App
-variable "web_app_name" {
+variable "app_service_plan_name" {
   type = string
-  default = "test0web0app00717"
 }
-variable "web_app_plan_name" {
-  type = string
-  default = "test0web0app0plan00717"
-}
-variable "sku_tier" {
+
+variable "app_service_plan_tier" {
   type    = string
   default = "Basic"
 }
 
-variable "sku_size" {
+variable "app_service_plan_size" {
   type    = string
   default = "B1"
 }
+
+variable "app_service_name" {
+  type = string
+}
+
 variable "docker_image" {
-  description = "Docker 이미지 (예: nginx:latest)"
   type        = string
+  description = "Docker 이미지 (예: nginx:latest)"
 }
 
 variable "app_settings" {
   type    = map(string)
   default = {}
-}
-
-variable "app_service_plan_name" {
-  type = string
-  default = "tes0pp0vice00717"
-}
-variable "app_service_name" {
-  type = string
-  default = "tes0pwebapp0717"
 }
 
 //Storage Account

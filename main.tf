@@ -133,30 +133,34 @@ module "vm_windows0717" {
   depends_on          = [module.nic0717, module.windows_nsg_rule0717]
 }
 
-# 2. App Service Plan (Linux, B1 요금제)
-module "named_app_service_plan" {
-  source = "./modules/web/webapp-plan"
-  plan_name            = var.app_service_plan_name
-  resource_group_name  = var.resource_group_name
-  location             = var.location
-  sku_tier             = var.sku_tier
-  sku_size             = var.sku_size
-  
+resource "azurerm_app_service_plan" "app_plan" {
+  name                = var.app_service_plan_name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  kind                = "Linux"
+
+  sku {
+    tier = var.app_service_plan_tier
+    size = var.app_service_plan_size
+  }
+
+  reserved = true
 }
 
-# 3. App Service (Web App)
-module "web_app" {
-  source              = "./modules/web/web-app"  # 상대 경로 (환경에 따라 조정)
-  resource_group_name = azurerm_resource_group.rg.name
+resource "azurerm_app_service" "web_app" {
+  name                = var.app_service_name
   location            = azurerm_resource_group.rg.location
-  plan_name           = var.app_service_plan_name
-  app_name            = var.web_app_name
-  docker_image        = "nginx:latest"
-  app_settings = {
-    "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
-    "DOCKER_REGISTRY_SERVER_URL"         = "https://index.docker.io"
+  resource_group_name = azurerm_resource_group.rg.name
+  app_service_plan_id = azurerm_app_service_plan.app_plan.id
+
+  site_config {
+    linux_fx_version = "DOCKER|${var.docker_image}"  # 예: "nginx:latest"
+    always_on        = true
   }
-  depends_on = [ module.named_app_service_plan ]
+
+  app_settings = var.app_settings
+
+  https_only = true
 }
 
 #Storage Account
