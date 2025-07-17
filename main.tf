@@ -133,6 +133,16 @@ module "vm_windows0717" {
   depends_on          = [module.nic0717, module.windows_nsg_rule0717]
 }
 
+//WEB APP
+module "webapp0717" {
+  source              = "./modules/appservice/webapp"
+  name                = var.webapp_name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  app_service_plan_id = module.app_service_plan0717.app_service_plan_id
+  app_settings        = var.webapp_app_settings
+}
+
 #Storage Account
 module "sa0717" {
   source = "./modules/storage/storage-account"
