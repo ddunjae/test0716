@@ -134,26 +134,29 @@ module "vm_windows0717" {
 }
 
 # 2. App Service Plan (Linux, B1 요금제)
-resource "azurerm_service_plan" "asp" {
-  name                = var.app_service_plan_name
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-
-  sku_name = "B1"
-  os_type  = "Linux" # 또는 "Windows"
+module "named_app_service_plan" {
+  source = "./modules/web/webapp-plan"
+  plan_name            = var.app_service_plan_name
+  resource_group_name  = var.resource_group_name
+  location             = var.location
+  sku_tier             = var.sku_tier
+  sku_size             = var.sku_size
+  
 }
 
 # 3. App Service (Web App)
-resource "azurerm_linux_web_app" "webapp" {
-  name                = var.app_service_name
+module "web_app" {
+  source              = "./modules/web/app"  # 상대 경로 (환경에 따라 조정)
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  service_plan_id     = azurerm_service_plan.asp.id
-  site_config {
-    application_stack {
-      node_version = "18-lts"
-    }
+  plan_name           = var.app_service_plan_name
+  app_name            = var.web_app_name
+  docker_image        = "nginx:latest"
+  app_settings = {
+    "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
+    "DOCKER_REGISTRY_SERVER_URL"         = "https://index.docker.io"
   }
+  depends_on = [ module.named_app_service_plan ]
 }
 
 #Storage Account
