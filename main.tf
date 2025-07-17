@@ -223,7 +223,7 @@ module "nsg_rule0717-iaas" {
 
 //VM-MSSQL
 module "vm_mssql0717" {
-  source              = "./modules/compute/vm-mssql"
+  source              = "./modules/database/vm-mssql"
   name                = var.mssql_vm_name
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
