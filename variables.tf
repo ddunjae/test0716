@@ -139,3 +139,55 @@ variable "container_name" {
   type    = string
   default = "tfstate"
 }
+
+//mssql-vm-nic
+variable "mssql_vm_nic_name" {
+  type = string
+  default = "test-mssql-vm-nic-0717"
+}
+
+//mssql-vm-nsg
+variable "mssql_vm_nsg_name" {
+  type = string
+  default = "test-mssql-vm-nsg-0717"
+}
+
+variable "mssql_vm_name" {
+  type    = string
+  default = "vm-mssql-0717"
+}
+
+variable "mssql_vm_size" {
+  type    = string
+  default = "Standard_D2s_v3"
+}
+
+variable "mssql_vm_username" {
+  type    = string
+  default = "azureuser"
+}
+
+variable "mssql_vm_password" {
+  type      = string
+  default   = "Qwer1234!@#"
+  sensitive = true
+}
+
+variable "mssql_os_disk_type" {
+  type    = string
+  default = "Standard_LRS"
+}
+
+variable "mssql_image" {
+  description = "SQL Server 포함된 Windows 이미지 정보"
+  type = object({
+    offer   = string
+    sku     = string
+    version = string
+  })
+  default = {
+    offer   = "sql2019-ws2019"
+    sku     = "standard"
+    version = "latest"
+  }
+}

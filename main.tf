@@ -162,7 +162,6 @@ resource "azurerm_app_service" "web_app" {
 
   https_only = true
 }
-
 #Storage Account
 module "sa0717" {
   source = "./modules/storage/storage-account"
@@ -178,4 +177,70 @@ module "sablob" {
   storage_account_name    = var.stoage_account_name
   access_type             = "private"
   metadata                = {}
+}
+
+
+
+//NIC
+module "nic0717-iaas" {
+  source = "./modules/compute/nic"
+  name = var.mssql_vm_nic_name
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  subnet_id = module.snet0717.subnet_ids["test-subnet-2"]
+  depends_on = [module.snet0717]
+}
+
+//NSG
+module "nsg0717-iaas" {
+  source = "./modules/network/nsg"
+  nsg_name = var.mssql_vm_nsg_name
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+}
+//NSG-Rule
+module "nsg_rule0717-iaas" {
+  source              = "./modules/network/nsg-rule"
+  resource_group_name = var.resource_group_name
+  nsg_name            = var.mssql_vm_nsg_name
+
+  rules = {
+    "allow-mssql" = {
+      priority                   = 100
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_port_range          = "*"
+      destination_port_range     = "1433"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    }
+  }
+  depends_on = [
+    module.nsg0717-iaas
+    ]
+}
+
+//VM-MSSQL
+module "vm_mssql0717" {
+  source              = "./modules/compute/vm-mssql"
+  name                = var.mssql_vm_name
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  vm_size             = var.mssql_vm_size
+  admin_username      = var.mssql_vm_username
+  admin_password      = var.mssql_vm_password
+  nic_id              = module.nic0717-iaas.nic_id
+  os_disk_type        = var.mssql_os_disk_type
+
+  image = {
+    offer   = var.mssql_image.offer
+    sku     = var.mssql_image.sku
+    version = var.mssql_image.version
+  }
+  depends_on = [
+    module.nic0717-iaas,
+    module.nsg0717-iaas,
+    module.nsg_rule0717-iaas
+  ]
 }
