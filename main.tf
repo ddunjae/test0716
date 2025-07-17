@@ -135,12 +135,15 @@ module "vm_windows0717" {
 
 //WEB APP
 module "webapp0717" {
-  source              = "./modules/appservice/webapp"
-  name                = var.webapp_name
-  location            = azurerm_resource_group.rg.location
+  source              = "./modules/web/web-app"
+  plan_name           = var.web_app_plan_name
+  location            = var.location
   resource_group_name = azurerm_resource_group.rg.name
-  app_service_plan_id = module.app_service_plan0717.app_service_plan_id
-  app_settings        = var.webapp_app_settings
+  sku_tier            = var.sku_tier
+  sku_size            = var.sku_size
+  app_name            = var.web_app_name
+  docker_image        = var.docker_image
+  app_settings        = var.app_settings
 }
 
 #Storage Account

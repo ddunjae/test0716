@@ -93,8 +93,33 @@ variable "windows_vm_password" {
   sensitive = true
 }
 
+//WEb App
+variable "web_app_name" {
+  type = string
+  default = "test0web0app00717"
+}
+variable "web_app_plan_name" {
+  type = string
+  default = "test0web0app0plan00717"
+}
+variable "sku_tier" {
+  type    = string
+  default = "Basic"
+}
 
+variable "sku_size" {
+  type    = string
+  default = "B1"
+}
+variable "docker_image" {
+  description = "Docker 이미지 (예: nginx:latest)"
+  type        = string
+}
 
+variable "app_settings" {
+  type    = map(string)
+  default = {}
+}
 
 
 //Storage Account
