@@ -26,12 +26,6 @@ variable "sku_name" {
   default     = "Standard_B1ms"
 }
 
-variable "version" {
-  description = "MySQL 버전 (예: 8.0.21)"
-  type        = string
-  default     = "8.0.21"
-}
-
 variable "zone" {
   description = "가용성 존"
   type        = string

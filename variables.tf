@@ -96,6 +96,7 @@ variable "windows_vm_password" {
 //WEb App
 variable "app_service_plan_name" {
   type = string
+  default = "plan07170conor"
 }
 
 variable "app_service_plan_tier" {
@@ -110,10 +111,15 @@ variable "app_service_plan_size" {
 
 variable "app_service_name" {
   type = string
+  default = "appseraicea0717"
 }
-
+variable "app_service_name2" {
+  type = string
+  default = "appseraicea0717"
+}
 variable "docker_image" {
   type        = string
+  default = "nginx:latest"
   description = "Docker 이미지 (예: nginx:latest)"
 }
 
@@ -141,7 +147,7 @@ variable "container_name" {
 }
 
 //mssql-vm-nic
-variable "mssql_vm_nic_name" {
+variable "mssql_vm_nic" {
   type = string
   default = "test-mssql-vm-nic-0717"
 }
@@ -151,43 +157,60 @@ variable "mssql_vm_nsg_name" {
   type = string
   default = "test-mssql-vm-nsg-0717"
 }
-
 variable "mssql_vm_name" {
-  type    = string
-  default = "vm-mssql-0717"
+  default = "vm-mssql"
 }
-
 variable "mssql_vm_size" {
-  type    = string
   default = "Standard_D2s_v3"
 }
-
 variable "mssql_vm_username" {
-  type    = string
   default = "azureuser"
 }
-
 variable "mssql_vm_password" {
-  type      = string
   default   = "Qwer1234!@#"
   sensitive = true
 }
-
 variable "mssql_os_disk_type" {
-  type    = string
   default = "Standard_LRS"
 }
 
-variable "mssql_image" {
-  description = "SQL Server 포함된 Windows 이미지 정보"
-  type = object({
-    offer   = string
-    sku     = string
-    version = string
-  })
-  default = {
-    offer   = "sql2019-ws2019"
-    sku     = "standard"
-    version = "latest"
-  }
+
+
+//mysql-flexible-server
+variable "mysql_flexible_server_name" {
+  type = string
+  default = "mysqloflex0conor0717"
+}
+variable "mysql_flexible_server_admin_username" {
+  type = string
+  default = "mysqladmin"
+}
+variable "mysql_flexible_server_admin_password" {
+  type      = string
+  default = "Qwer1234!@#"
+  sensitive = true
+}
+variable "mysql_flexible_server_sku_name" {
+  type    = string
+  default = "GP_Standard_D2ds_v4"  # ← 이처럼 접두사(GP_) 포함해야 함
+}
+variable "mysql_flexible_server_version" {
+  type = string
+  default = "8.0"
+}
+variable "mysql_flexible_server_zone" {
+  type = string
+  default = "1"
+}
+variable "mysql_flexible_server_storage_gb" {
+  type = number
+  default = 32
+}
+variable "mysql_flexible_server_backup_retention_days" {
+  type = number
+  default = 7
+}
+variable "mysql_flexible_server_ha_enabled" {
+  type = bool
+  default = false
 }

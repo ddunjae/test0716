@@ -6,7 +6,6 @@ resource "azurerm_mysql_flexible_server" "mysql_flexible" {
   administrator_login    = var.admin_username
   administrator_password = var.admin_password
   sku_name               = var.sku_name
-  version                = var.version
   zone                   = var.zone
 
   storage {
@@ -14,9 +13,10 @@ resource "azurerm_mysql_flexible_server" "mysql_flexible" {
   }
 
   backup_retention_days = var.backup_retention_days
-  high_availability {
-    mode = var.ha_enabled ? "ZoneRedundant" : "Disabled"
+  dynamic "high_availability" {
+    for_each = var.ha_enabled ? [1] : []
+    content {
+      mode = "ZoneRedundant"
+    }
   }
-
-  tags = var.tags
 }

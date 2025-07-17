@@ -162,6 +162,21 @@ resource "azurerm_app_service" "web_app" {
 
   https_only = true
 }
+resource "azurerm_app_service" "web_app2" {
+  name                = var.app_service_name2
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  app_service_plan_id = azurerm_app_service_plan.app_plan.id
+
+  site_config {
+    linux_fx_version = "DOCKER|${var.docker_image}"  # 예: "nginx:latest"
+    always_on        = true
+  }
+
+  app_settings = var.app_settings
+
+  https_only = true
+}
 #Storage Account
 module "sa0717" {
   source = "./modules/storage/storage-account"
@@ -184,7 +199,7 @@ module "sablob" {
 //NIC
 module "nic0717-iaas" {
   source = "./modules/compute/nic"
-  name = var.mssql_vm_nic_name
+  name = var.mssql_vm_nic
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   subnet_id = module.snet0717.subnet_ids["test-subnet-2"]
@@ -234,13 +249,27 @@ module "vm_mssql0717" {
   os_disk_type        = var.mssql_os_disk_type
 
   image = {
-    offer   = var.mssql_image.offer
-    sku     = var.mssql_image.sku
-    version = var.mssql_image.version
+    offer   = "sql2019-ws2019"
+    sku     = "standard"
+    version = "latest"
   }
-  depends_on = [
-    module.nic0717-iaas,
-    module.nsg0717-iaas,
-    module.nsg_rule0717-iaas
-  ]
+
+  tags = {
+    role = "mssql"
+    env  = "dev"
+  }
+}
+//MySQL Flexible Server
+module "mysql_flexible_server" {
+  source              = "./modules/database/mysql-flexible"
+  name                = var.mysql_flexible_server_name
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  admin_username      = var.mysql_flexible_server_admin_username
+  admin_password      = var.mysql_flexible_server_admin_password
+  sku_name            = var.mysql_flexible_server_sku_name
+  zone                = var.mysql_flexible_server_zone
+  storage_gb          = var.mysql_flexible_server_storage_gb
+  backup_retention_days = var.mysql_flexible_server_backup_retention_days
+  ha_enabled          = var.mysql_flexible_server_ha_enabled
 }
