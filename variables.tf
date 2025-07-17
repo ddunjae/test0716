@@ -77,7 +77,7 @@ variable "windows_nic_name" {
 //windows -vm
 variable "windows_vm_name" {
   type = string
-  default = "test-vm-windows-0717"
+  default = "twindows-0717"
 }
 variable "windows_vm_size" {
   type = string
