@@ -130,21 +130,19 @@ variable "app_service_name" {
   default = "tes0pwebapp0717"
 }
 
-variable "storage_account_name" {
+//Storage Account
+variable "stoage_account_name" {
   type    = string
-  default = "testconorstorage0717"
+  default = "testconorstorage0717"  
 }
-
-variable "storage_account_tier" {
-  type    = string
+variable "stoage_account_tier" {
+  type = string
   default = "Standard"
 }
-
-variable "storage_account_replication_type" {
-  type    = string
+variable "stoage_account_replication_type" {
+  type = string
   default = "LRS"
 }
-
 variable "container_name" {
   type    = string
   default = "tfstate"
