@@ -175,10 +175,3 @@ module "sablob" {
   access_type             = "private"
   metadata                = {}
 }
-
-module "vmmssql0717" {
-  source = "./modules/database/mssql-vm"
-  name                = var.mssql_vm_name
-  location            = var.location
-  resource_group_name = azurerm_resource_group.rg.name  
-}
