@@ -133,17 +133,27 @@ module "vm_windows0717" {
   depends_on          = [module.nic0717, module.windows_nsg_rule0717]
 }
 
-//WEB APP
-module "webapp0717" {
-  source              = "./modules/web/web-app"
-  plan_name           = var.web_app_plan_name
-  location            = var.location
+# 2. App Service Plan (Linux, B1 요금제)
+resource "azurerm_service_plan" "asp" {
+  name                = var.app_service_plan_name
   resource_group_name = azurerm_resource_group.rg.name
-  sku_tier            = var.sku_tier
-  sku_size            = var.sku_size
-  app_name            = var.web_app_name
-  docker_image        = var.docker_image
-  app_settings        = var.app_settings
+  location            = azurerm_resource_group.rg.location
+
+  sku_name = "B1"
+  os_type  = "Linux" # 또는 "Windows"
+}
+
+# 3. App Service (Web App)
+resource "azurerm_linux_web_app" "webapp" {
+  name                = var.app_service_name
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  service_plan_id     = azurerm_service_plan.asp.id
+  site_config {
+    application_stack {
+      node_version = "18-lts"
+    }
+  }
 }
 
 #Storage Account
@@ -161,6 +171,11 @@ module "sablob" {
   storage_account_name    = var.stoage_account_name
   access_type             = "private"
   metadata                = {}
+}
 
-  
+module "vmmssql0717" {
+  source = "./modules/database/mssql-vm"
+  name                = var.mssql_vm_name
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg.name  
 }

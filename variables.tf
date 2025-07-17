@@ -121,6 +121,14 @@ variable "app_settings" {
   default = {}
 }
 
+variable "app_service_plan_name" {
+  type = string
+  default = "tes0pp0vice00717"
+}
+variable "app_service_name" {
+  type = string
+  default = "tes0pwebapp0717"
+}
 
 //Storage Account
 variable "stoage_account_name" {
