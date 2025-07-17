@@ -63,12 +63,30 @@ variable "linux_vm_password" {
   sensitive = true
 }
 
+//windows-nsg
+variable "windows_nsg_name" {
+  type = string
+  default = "test-windows-nsg-0717"
+}
 
-
-
-
-
-
+//windows -vm
+variable "windows_vm_name" {
+  type = string
+  default = "test-vm-windows-0717"
+}
+variable "windows_vm_size" {
+  type = string
+  default = "Standard_B1s"
+}
+variable "windows_vm_username" {
+  type = string
+  default = "azureuser"
+}
+variable "windows_vm_password" {
+  type = string
+  default = "Qwer1234!@#"
+  sensitive = true
+}
 
 
 

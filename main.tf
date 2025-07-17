@@ -82,6 +82,34 @@ module "vm_linux0717" {
   admin_password      = var.linux_vm_password
 }
 
+//Windows NSG
+module "windows_nsg0717" {
+  source = "./modules/network/nsg"
+  nsg_name = var.windows_nsg_name
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+}
+module "windows_nsg_rule0717" {
+  source              = "./modules/network/nsg-rule"
+  resource_group_name = var.resource_group_name
+  nsg_name            = var.windows_nsg_name
+  rules = {
+    "allow-rdp" = {
+      priority                   = 100
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_port_range          = "*"
+      destination_port_range     = "3389"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    }
+  }
+  depends_on = [
+    module.windows_nsg0717
+    ]
+}
+
 #Storage Account
 module "sa0717" {
   source = "./modules/storage/storage-account"
