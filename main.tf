@@ -110,6 +110,29 @@ module "windows_nsg_rule0717" {
     ]
 }
 
+//windows nic
+
+module "nic0717" {
+  source = "./modules/compute/nic"
+  name = var.windows_nic_name
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  subnet_id = module.snet0717.subnet_ids["test-subnet-1"]
+  depends_on = [module.snet0717]
+}
+//windows vm
+module "vm_windows0717" {
+  source              = "./modules/compute/windows-vm"
+  name                = var.windows_vm_name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  vm_size             = var.windows_vm_size
+  network_interface_ids = [module.nic0717.nic_id]
+  admin_username      = var.windows_vm_username
+  admin_password      = var.windows_vm_password
+  depends_on          = [module.nic0717, module.windows_nsg_rule0717]
+}
+
 #Storage Account
 module "sa0717" {
   source = "./modules/storage/storage-account"

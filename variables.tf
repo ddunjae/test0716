@@ -68,6 +68,11 @@ variable "windows_nsg_name" {
   type = string
   default = "test-windows-nsg-0717"
 }
+//Windows nic
+variable "windows_nic_name" {
+  type = string
+  default = "test-vm-windows-nic-0717"
+}
 
 //windows -vm
 variable "windows_vm_name" {
