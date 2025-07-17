@@ -146,7 +146,7 @@ module "named_app_service_plan" {
 
 # 3. App Service (Web App)
 module "web_app" {
-  source              = "./modules/web/app"  # 상대 경로 (환경에 따라 조정)
+  source              = "./modules/web/web-app"  # 상대 경로 (환경에 따라 조정)
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   plan_name           = var.app_service_plan_name
