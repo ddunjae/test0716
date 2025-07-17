@@ -3,6 +3,10 @@ name: 'Terraform Azure Deploy'
 on:
   workflow_dispatch:
 
+concurrency:
+  group: terraform-prod
+  cancel-in-progress: true  # 같은 브랜치 실행 중일 경우 이전 실행 자동 취소
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -25,8 +29,13 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Plan
-        run: terraform plan -out=tfplan
+      - name: Terraform Plan with Retry
+        run: |
+          for i in {1..5}; do
+            terraform plan -out=tfplan && break
+            echo "Terraform state is locked. Retrying in 20s..."
+            sleep 20
+          done
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
